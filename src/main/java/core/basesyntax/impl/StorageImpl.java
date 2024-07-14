@@ -2,48 +2,46 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
-    private ArrayList<K> keys;
-    private ArrayList<V> values;
+    private K[] keys;
+    private V[] values;
     private int size;
 
     public StorageImpl() {
-        keys = new ArrayList<>(MAX_SIZE);
-        values = new ArrayList<>(MAX_SIZE);
+        keys = (K[]) new Object[MAX_SIZE];
+        values = (V[]) new Object[MAX_SIZE];
     }
 
     @Override
     public void put(K key, V value) {
-        for (int i = 0; i <= keys.size(); i++) {
-            if (keys.get(i) == null ? key == null : keys.get(i).equals(key)) {
-                values.set(i, value);
-                return;
+        for (int i = 0; i < keys.length; i++) {
+            if (keys[i] == null ? key == null : keys[i].equals(key)) {
+                values[i] = value;
             }
         }
-        if (keys.size() < MAX_SIZE) {
+
+        if (keys[] <MAX_SIZE){
             keys.add(key);
             values.add(value);
-        } else {
-            throw new IllegalStateException("Storage is full");
+        } else if {
+            throw new IllegalStateException("Storage is Full");
         }
     }
 
     @Override
     public V get(K key) {
-        for (int i = 0; i < keys.size(); i++) {
-            if (keys.get(i) == null ? key == null : keys.get(i).equals(key)) {
-                return values.get(i);
-            }
+        int index = Collections.binarySearch(keys, key);
+        return values[index];
 
-        }
-        return null;
     }
 
     @Override
     public int size() {
-        return keys.size();
+        return 0;
     }
 }
+
+
