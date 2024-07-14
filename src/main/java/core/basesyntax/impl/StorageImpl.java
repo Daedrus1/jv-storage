@@ -2,17 +2,17 @@ package core.basesyntax.impl;
 
 import core.basesyntax.Storage;
 
-import java.util.Collections;
-
 public class StorageImpl<K, V> implements Storage<K, V> {
     private static final int MAX_SIZE = 10;
     private K[] keys;
     private V[] values;
     private int size;
 
+    @SuppressWarnings("unchecked")
     public StorageImpl() {
         keys = (K[]) new Object[MAX_SIZE];
         values = (V[]) new Object[MAX_SIZE];
+        size = 0;
     }
 
     @Override
@@ -20,22 +20,27 @@ public class StorageImpl<K, V> implements Storage<K, V> {
         for (int i = 0; i < keys.length; i++) {
             if (keys[i] == null ? key == null : keys[i].equals(key)) {
                 values[i] = value;
+                return;
             }
         }
 
-        if (keys[] <MAX_SIZE){
-            keys.add(key);
-            values.add(value);
-        } else if {
+        if (size < MAX_SIZE) {
+            keys[size] = key;
+            values[size] = value;
+            size++;
+        } else {
             throw new IllegalStateException("Storage is Full");
         }
     }
 
     @Override
     public V get(K key) {
-        int index = Collections.binarySearch(keys, key);
-        return values[index];
-
+        for (int i = 0; i < size; i++) {
+            if (keys[i] == null ? key == null : keys[i].equals(key)) {
+                return values[i];
+            }
+        }
+        return null;
     }
 
     @Override
